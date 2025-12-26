@@ -26,7 +26,6 @@ const characterStore = useCharacterStore();
   margin: 0 0 1rem 0;
   font-weight: 600;
   border-bottom: 2px solid var(--border-color);
-  padding-bottom: 0.5rem;
 }
 
 .inventory-section textarea {

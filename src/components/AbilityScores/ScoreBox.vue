@@ -36,6 +36,7 @@ const score = defineModel<number>();
   padding-bottom: 0.5rem;
   text-align: center;
   transition: transform 0.2s, box-shadow 0.2s;
+  overflow: hidden;
 }
 
 .score-box.rollable {

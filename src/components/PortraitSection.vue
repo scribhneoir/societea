@@ -155,6 +155,7 @@ onMounted(async () => {
   border: 3px solid var(--border-color);
   border-radius: 50%;
   object-fit: cover;
+  object-position: top;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
