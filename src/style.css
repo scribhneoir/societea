@@ -1,0 +1,118 @@
+:root {
+  font-family: "Texturina", serif;
+  font-optical-sizing: auto;
+  line-height: 1.6;
+  font-weight: 400;
+
+  --black: #222323;
+  --mauve: #472e3f;
+  --blue: #2f4765;
+  --green: #3b705b;
+  --red: #863f47;
+  --white: #efe3d2;
+
+  /* Theme mappings using only the 6 colors above */
+  --primary-color: var(--mauve);
+  --secondary-color: var(--green);
+  --accent-color: var(--blue);
+  --background: var(--white);
+  --card-background: var(--white);
+  --text-primary: var(--black);
+  --text-secondary: var(--mauve);
+  --border-color: var(--mauve);
+  --forbidden-accent: var(--red);
+  --acceptable-accent: var(--blue);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--black);
+  color: var(--text-primary);
+  min-height: 100vh;
+}
+
+#app {
+  width: 100%;
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+/* Dice Box Container */
+#dice-box-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+#dice-box-container canvas {
+  pointer-events: none;
+}
+
+/* Dice Result Notification */
+.dice-result-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: var(--card-background);
+  border: 3px solid var(--secondary-color);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  z-index: 2000;
+  min-width: 200px;
+  opacity: 0;
+  transform: translateX(400px);
+  transition: all 0.3s ease;
+}
+
+.dice-result-notification.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.dice-result-content {
+  text-align: center;
+}
+
+.dice-result-content strong {
+  display: block;
+  font-size: 1.1rem;
+  color: var(--primary-color);
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.dice-result-values {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.dice-result-total {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent-color);
+  margin-top: 0.5rem;
+}
+
+/* Mobile Responsive */
+@media (max-width: 640px) {
+  #app {
+    padding: 0.5rem;
+  }
+}
