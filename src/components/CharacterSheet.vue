@@ -2,15 +2,23 @@
   <div class="character-sheet">
     <div class="header-container">
       <h1 class="title">High Societea</h1>
-      <IconButton
-        @click="characterStore.toggleEditMode()"
-        style="margin-bottom: -1rem"
-        :icon="
-          characterStore.isEditMode
-            ? 'fluent:checkmark-24-regular'
-            : 'fluent:edit-24-regular'
-        "
-      />
+      <div class="header-buttons">
+        <IconButton
+          @click="showDocs = true"
+          style="margin-bottom: -1rem"
+          :icon="'fluent:book-24-regular'"
+          title="Documentation"
+        />
+        <IconButton
+          @click="characterStore.toggleEditMode()"
+          style="margin-bottom: -1rem"
+          :icon="
+            characterStore.isEditMode
+              ? 'fluent:checkmark-24-regular'
+              : 'fluent:edit-24-regular'
+          "
+        />
+      </div>
     </div>
     <div class="top-section">
       <PortraitSection />
@@ -27,19 +35,24 @@
         Delete Character
       </button>
     </div>
+
+    <DocumentationOverlay :isVisible="showDocs" @close="showDocs = false" />
   </div>
 </template>
 
 <script setup lang="ts">
-import IconButton from "./atom/IconButton.vue";
+import { ref } from 'vue';
 import { useCharacterStore } from "../stores/character";
-import PortraitSection from "./PortraitSection.vue";
-import BasicInfoSection from "./BasicInfoSection.vue";
 import AbilityScores from "./AbilityScores/AbilityScores.vue";
-import SkillsSection from "./SkillsSection.vue";
+import IconButton from "./atom/IconButton.vue";
+import BasicInfoSection from "./BasicInfoSection.vue";
+import DocumentationOverlay from "./DocumentationOverlay.vue";
 import InventorySection from "./InventorySection.vue";
+import PortraitSection from "./PortraitSection.vue";
+import SkillsSection from "./SkillsSection.vue";
 
 const characterStore = useCharacterStore();
+const showDocs = ref(false);
 </script>
 
 <style scoped>
@@ -60,6 +73,12 @@ const characterStore = useCharacterStore();
   justify-content: space-between;
   align-items: center;
   border-bottom: 2px solid var(--border-color);
+}
+
+.header-buttons {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
 }
 
 .title {

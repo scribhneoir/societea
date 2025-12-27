@@ -44,11 +44,11 @@
 </template>
 
 <script setup lang="ts">
-import { useCharacterStore } from "../../stores/character";
 import { useDiceRoller } from "../../composables/useDiceRoller";
+import { useCharacterStore } from "../../stores/character";
 import { roll3d6ForAbilityPoints } from "../../utils/diceRoller";
-import ScoreBox from "./ScoreBox.vue";
 import IconButton from "../atom/IconButton.vue";
+import ScoreBox from "./ScoreBox.vue";
 
 const characterStore = useCharacterStore();
 const { rollDice } = useDiceRoller();

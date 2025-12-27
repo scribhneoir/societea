@@ -117,15 +117,14 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { useCharacterStore } from "../stores/character";
 import { useDiceRoller } from "../composables/useDiceRoller";
 import {
   getAcceptableSkills,
   getForbiddenSkills,
-  getSkillAbility,
   type AbilityScore,
-  type SkillWithAbility,
+  type SkillWithAbility
 } from "../data/skills";
+import { useCharacterStore } from "../stores/character";
 
 const characterStore = useCharacterStore();
 const { rollWithAdvantage } = useDiceRoller();

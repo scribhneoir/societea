@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import CharacterSheet from './components/CharacterSheet.vue'
+import CharacterSheet from './components/CharacterSheet.vue';
 </script>
 
 <style>
