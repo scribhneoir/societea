@@ -12,60 +12,102 @@
       <div class="skill-column socially-acceptable">
         <h3>Acceptable</h3>
         <div class="skill-list" id="acceptable-skills">
+          <!-- Group skills by ability score -->
           <div
-            v-for="skill in acceptableSkills"
-            :key="skill"
-            class="skill-item"
-            :class="{
-              rollable:
-                !characterStore.isEditMode &&
-                characterStore.skills.has(skill.toLowerCase()),
-            }"
-            @click="handleSkillClick(skill)"
+            v-for="ability in characterStore.isEditMode
+              ? abilityScores
+              : abilityScores.filter(
+                  (ability) =>
+                    getAcceptableSkillsByAbility(ability).filter((skill) =>
+                      characterStore.skills.has(skill.name.toLowerCase())
+                    ).length > 0
+                )"
+            :key="`acceptable-${ability}`"
+            class="ability-group"
           >
-            <input
-              type="checkbox"
-              :id="`skill-${skill.toLowerCase()}`"
-              :name="`skill-${skill.toLowerCase()}`"
-              :checked="characterStore.skills.has(skill.toLowerCase())"
-              :disabled="
-                !characterStore.isEditMode ||
-                (!characterStore.skills.has(skill.toLowerCase()) &&
-                  characterStore.skills.size >= characterStore.accomplishment)
-              "
-              @change.stop="toggleSkill(skill)"
-            />
-            <label :for="`skill-${skill.toLowerCase()}`">{{ skill }}</label>
+            <h4 class="ability-header">{{ getAbilityLabel(ability) }}</h4>
+            <div
+              v-for="skill in characterStore.isEditMode
+                ? getAcceptableSkillsByAbility(ability)
+                : getAcceptableSkillsByAbility(ability).filter((skill) =>
+                    characterStore.skills.has(skill.name.toLowerCase())
+                  )"
+              :key="skill.name"
+              class="skill-item"
+              :class="{
+                rollable:
+                  !characterStore.isEditMode &&
+                  characterStore.skills.has(skill.name.toLowerCase()),
+              }"
+              @click="handleSkillClick(skill)"
+            >
+              <input
+                type="checkbox"
+                :id="`skill-${skill.name.toLowerCase()}`"
+                :name="`skill-${skill.name.toLowerCase()}`"
+                :checked="characterStore.skills.has(skill.name.toLowerCase())"
+                :disabled="
+                  !characterStore.isEditMode ||
+                  (!characterStore.skills.has(skill.name.toLowerCase()) &&
+                    characterStore.skills.size >= characterStore.accomplishment)
+                "
+                @change.stop="toggleSkill(skill.name)"
+              />
+              <label :for="`skill-${skill.name.toLowerCase()}`">{{
+                skill.name
+              }}</label>
+            </div>
           </div>
         </div>
       </div>
       <div class="skill-column forbidden">
         <h3>Forbidden</h3>
         <div class="skill-list" id="forbidden-skills">
+          <!-- Group skills by ability score -->
           <div
-            v-for="skill in forbiddenSkills"
-            :key="skill"
-            class="skill-item"
-            :class="{
-              rollable:
-                !characterStore.isEditMode &&
-                characterStore.skills.has(skill.toLowerCase()),
-            }"
-            @click="handleSkillClick(skill)"
+            v-for="ability in characterStore.isEditMode
+              ? abilityScores
+              : abilityScores.filter(
+                  (ability) =>
+                    getForbiddenSkillsByAbility(ability).filter((skill) =>
+                      characterStore.skills.has(skill.name.toLowerCase())
+                    ).length > 0
+                )"
+            :key="`forbidden-${ability}`"
+            class="ability-group"
           >
-            <input
-              type="checkbox"
-              :id="`skill-${skill.toLowerCase()}`"
-              :name="`skill-${skill.toLowerCase()}`"
-              :checked="characterStore.skills.has(skill.toLowerCase())"
-              :disabled="
-                !characterStore.isEditMode ||
-                (!characterStore.skills.has(skill.toLowerCase()) &&
-                  characterStore.skills.size >= characterStore.accomplishment)
-              "
-              @change.stop="toggleSkill(skill)"
-            />
-            <label :for="`skill-${skill.toLowerCase()}`">{{ skill }}</label>
+            <h4 class="ability-header">{{ getAbilityLabel(ability) }}</h4>
+            <div
+              v-for="skill in characterStore.isEditMode
+                ? getForbiddenSkillsByAbility(ability)
+                : getForbiddenSkillsByAbility(ability).filter((skill) =>
+                    characterStore.skills.has(skill.name.toLowerCase())
+                  )"
+              :key="skill.name"
+              class="skill-item"
+              :class="{
+                rollable:
+                  !characterStore.isEditMode &&
+                  characterStore.skills.has(skill.name.toLowerCase()),
+              }"
+              @click="handleSkillClick(skill)"
+            >
+              <input
+                type="checkbox"
+                :id="`skill-${skill.name.toLowerCase()}`"
+                :name="`skill-${skill.name.toLowerCase()}`"
+                :checked="characterStore.skills.has(skill.name.toLowerCase())"
+                :disabled="
+                  !characterStore.isEditMode ||
+                  (!characterStore.skills.has(skill.name.toLowerCase()) &&
+                    characterStore.skills.size >= characterStore.accomplishment)
+                "
+                @change.stop="toggleSkill(skill.name)"
+              />
+              <label :for="`skill-${skill.name.toLowerCase()}`">{{
+                skill.name
+              }}</label>
+            </div>
           </div>
         </div>
       </div>
@@ -77,41 +119,99 @@
 import { computed } from "vue";
 import { useCharacterStore } from "../stores/character";
 import { useDiceRoller } from "../composables/useDiceRoller";
-import { feminineSkills, masculineSkills } from "../data/skills";
+import {
+  getAcceptableSkills,
+  getForbiddenSkills,
+  getSkillAbility,
+  type AbilityScore,
+  type SkillWithAbility,
+} from "../data/skills";
 
 const characterStore = useCharacterStore();
-const { rollDice } = useDiceRoller();
+const { rollWithAdvantage } = useDiceRoller();
+
+const abilityScores: AbilityScore[] = [
+  "beauty",
+  "wit",
+  "constitution",
+  "accomplishment",
+];
 
 const acceptableSkills = computed(() => {
-  return characterStore.gender === "female" ? feminineSkills : masculineSkills;
+  if (!characterStore.gender) return [];
+  return getAcceptableSkills(characterStore.gender as "male" | "female");
 });
 
 const forbiddenSkills = computed(() => {
-  return characterStore.gender === "female" ? masculineSkills : feminineSkills;
+  if (!characterStore.gender) return [];
+  return getForbiddenSkills(characterStore.gender as "male" | "female");
 });
 
-const toggleSkill = (skill: string) => {
+const getAcceptableSkillsByAbility = (
+  ability: AbilityScore
+): SkillWithAbility[] => {
+  return acceptableSkills.value.filter((skill) => skill.ability === ability);
+};
+
+const getForbiddenSkillsByAbility = (
+  ability: AbilityScore
+): SkillWithAbility[] => {
+  return forbiddenSkills.value.filter((skill) => skill.ability === ability);
+};
+
+const getAbilityLabel = (ability: AbilityScore): string => {
+  const labels: Record<AbilityScore, string> = {
+    beauty:
+      characterStore.gender === "female"
+        ? "Beauty"
+        : characterStore.gender === "male"
+        ? "Wealth"
+        : "Beauty/Wealth",
+    wit: "Wit",
+    constitution: "Constitution",
+    accomplishment: "Accomplishment",
+  };
+  return labels[ability];
+};
+
+const toggleSkill = (skillName: string) => {
   if (characterStore.isEditMode) {
-    characterStore.toggleSkill(skill.toLowerCase());
+    characterStore.toggleSkill(skillName.toLowerCase());
   }
 };
 
-const handleSkillClick = (skill: string) => {
+const handleSkillClick = (skill: SkillWithAbility) => {
   if (
     !characterStore.isEditMode &&
-    characterStore.skills.has(skill.toLowerCase())
+    characterStore.skills.has(skill.name.toLowerCase())
   ) {
-    // Get the target value for the skill (you might need to determine this based on your game logic)
-    const target = getSkillTarget();
-    rollDice(skill, target, true);
+    // Get the target value for the skill based on its ability score
+    const target = getAbilityTarget(skill.ability);
+
+    // Roll with advantage (3d6, drop highest)
+    rollWithAdvantage(skill.name, target, true);
+
+    // If skill is forbidden, decrease Social Standing
+    if (skill.isForbidden) {
+      characterStore.decreaseSocialStanding(1);
+    }
   }
 };
 
-// Helper function to determine skill target value
-const getSkillTarget = (): number => {
-  // Map skills to their relevant ability scores
-  // For now, using a default value - you may want to customize this based on your game rules
-  return 10;
+// Helper function to get the ability score value
+const getAbilityTarget = (ability: AbilityScore): number => {
+  switch (ability) {
+    case "beauty":
+      return characterStore.genderSpecificScore;
+    case "wit":
+      return characterStore.wit;
+    case "constitution":
+      return characterStore.constitution;
+    case "accomplishment":
+      return characterStore.accomplishment;
+    default:
+      return 10;
+  }
 };
 </script>
 
@@ -146,7 +246,7 @@ const getSkillTarget = (): number => {
 
 .skill-column h3 {
   font-size: 1.1rem;
-  margin: 0 0 0.75rem 0;
+  margin: 0;
   font-weight: 600;
   text-align: center;
   padding: 0.2rem;
@@ -168,11 +268,28 @@ const getSkillTarget = (): number => {
   gap: 0.5rem;
 }
 
+.ability-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.ability-header {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 0.3rem 0.6rem;
+  margin: 0 0 0.25rem 0;
+  background: rgba(71, 46, 63, 0.05);
+}
+
 .skill-item {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.4rem;
+  padding: 0.4rem 0.6rem;
+  padding-left: 1.2rem;
   border-radius: 4px;
   transition: background-color 0.2s;
 }
@@ -237,6 +354,10 @@ const getSkillTarget = (): number => {
 
   .skill-column h3 {
     font-size: 1rem;
+  }
+
+  .ability-header {
+    font-size: 0.8rem;
   }
 }
 </style>

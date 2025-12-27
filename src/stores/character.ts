@@ -25,7 +25,7 @@ export const useCharacterStore = defineStore("character", () => {
   const wit = ref(4);
   const genderSpecificScore = ref(4);
   const accomplishment = ref(4);
-  const socialStanding = ref(10);
+  const socialStanding = ref(5);
   const skills = ref<Set<string>>(new Set());
   const inventory = ref("");
 
@@ -146,8 +146,40 @@ export const useCharacterStore = defineStore("character", () => {
     }
   }
 
+  function deleteCharacter() {
+    if (
+      confirm(
+        "Are you sure you want to delete this character? This action cannot be undone."
+      )
+    ) {
+      // Clear all character data
+      name.value = "";
+      age.value = 0;
+      gender.value = "";
+      abillityPoints.value = 16;
+      constitution.value = 4;
+      wit.value = 4;
+      genderSpecificScore.value = 4;
+      accomplishment.value = 4;
+      socialStanding.value = 5;
+      skills.value = new Set();
+      inventory.value = "";
+      portrait.value = null;
+
+      // Clear from localStorage
+      localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem(PORTRAIT_KEY);
+
+      console.log("Character deleted");
+    }
+  }
+
   function setAbilityPoints(points: number) {
     abillityPoints.value = points;
+  }
+
+  function decreaseSocialStanding(amount: number = 1) {
+    socialStanding.value = Math.max(0, socialStanding.value - amount);
   }
 
   // Auto-save on character data changes
@@ -193,6 +225,8 @@ export const useCharacterStore = defineStore("character", () => {
     loadPortrait,
     loadEditMode,
     clearCharacter,
+    deleteCharacter,
     setAbilityPoints,
+    decreaseSocialStanding,
   };
 });

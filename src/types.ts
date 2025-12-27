@@ -1,5 +1,7 @@
 // Type definitions for Societea TTRPG
 
+export type AbilityScoreName = "beauty" | "wit" | "constitution" | "accomplishment";
+
 export interface Character {
   name: string;
   age: number;
@@ -17,4 +19,11 @@ export interface Skill {
   id: string;
   name: string;
   category: "acceptable" | "forbidden";
+  abilityScore: AbilityScoreName;
+}
+
+export interface SkillWithAbility {
+  name: string;
+  ability: AbilityScoreName;
+  isForbidden: boolean;
 }

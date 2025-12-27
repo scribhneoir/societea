@@ -49,7 +49,7 @@
             type="number"
             class="social-standing-input"
             min="0"
-            max="20"
+            max="10"
           />
         </div>
       </button>

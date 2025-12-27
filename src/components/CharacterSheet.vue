@@ -21,6 +21,12 @@
       <SkillsSection />
     </div>
     <InventorySection />
+
+    <div v-if="characterStore.isEditMode" class="delete-section">
+      <button class="delete-button" @click="characterStore.deleteCharacter()">
+        Delete Character
+      </button>
+    </div>
   </div>
 </template>
 
@@ -80,6 +86,37 @@ const characterStore = useCharacterStore();
   grid-template-columns: 250px 1fr;
   gap: 1.5rem;
   margin-bottom: 1.5rem;
+}
+
+/* Delete Section */
+.delete-section {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid var(--border-color);
+  display: flex;
+  justify-content: center;
+}
+
+.delete-button {
+  padding: 0.75rem 2rem;
+  background: var(--red);
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: "Texturina", serif;
+  font-optical-sizing: auto;
+}
+
+.delete-button:hover {
+  scale: 1.05;
+}
+
+.delete-button:active {
+  scale: 0.95;
 }
 
 /* Mobile Responsive */

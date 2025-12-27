@@ -209,3 +209,88 @@ export async function roll3d6ForAbilityPoints(
 
   await diceBox.roll("3dpip");
 }
+
+export async function roll3d6WithAdvantage(
+  label: string,
+  target: number,
+  under = true
+): Promise<void> {
+  currentRollLabel = label;
+  currentTarget = target;
+  currentUnder = under;
+
+  // Cancel any pending cleanup
+  if (cleanupTimer) {
+    clearTimeout(cleanupTimer);
+    cleanupTimer = null;
+  }
+
+  // Force complete unmount if dice box exists
+  if (diceBox) {
+    await cleanupDiceBox();
+  }
+
+  // Remount fresh dice box
+  await initializeDiceBox();
+
+  if (!diceBox) return;
+
+  const canvas = document.querySelector(
+    "#dice-box-container canvas"
+  ) as HTMLElement;
+  if (canvas) {
+    canvas.style.opacity = "1";
+    canvas.style.transition = `opacity ${FADE_DURATION}ms ease-in-out`;
+  }
+
+  // Override the roll complete handler for this specific roll
+  diceBox.onRollComplete = (results: any) => {
+    const rollGroup = results?.[0];
+    const adjustedValues =
+      rollGroup?.rolls?.map((die: any) => {
+        const value = die.value || die.groupValue || 0;
+        return value === 6 ? 0 : value;
+      }) || [];
+
+    // Sort values and drop the highest (advantage)
+    const sortedValues = [...adjustedValues].sort((a, b) => a - b);
+    const droppedValue = sortedValues[2]; // highest value (last in sorted array)
+    const keptValues = sortedValues.slice(0, 2); // keep the two lowest
+    const total = keptValues.reduce((sum: number, val: number) => sum + val, 0);
+
+    const success = currentUnder
+      ? total <= currentTarget
+      : total >= currentTarget;
+
+    const notification = document.createElement("div");
+    notification.className = "dice-result-notification";
+    notification.innerHTML = `
+      <div class="dice-result-content ${
+        success ? "dice-result-success" : "dice-result-failure"
+      }">
+        <strong>${currentRollLabel || "Roll"}</strong>
+        <strong>${success ? "Success" : "Failure"}</strong>
+        <div class="dice-result-total">Rolled: ${adjustedValues.join(
+          ", "
+        )}</div>
+        <div class="dice-result-total">Dropped highest: ${droppedValue}</div>
+        <div class="dice-result-total">Total: ${total} ${
+      currentUnder ? "≤" : "≥"
+    } ${currentTarget}</div>
+      </div>
+    `;
+
+    document.body.appendChild(notification);
+    setTimeout(() => notification.classList.add("show"), 10);
+
+    setTimeout(() => {
+      notification.classList.remove("show");
+      setTimeout(() => notification.remove(), FADE_DURATION);
+    }, CLEANUP_DELAY);
+
+    // Schedule cleanup
+    cleanupTimer = window.setTimeout(cleanupDiceBox, CLEANUP_DELAY);
+  };
+
+  await diceBox.roll("3dpip");
+}
