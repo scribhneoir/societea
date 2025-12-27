@@ -18,9 +18,7 @@ export function usePortrait() {
     return `https://www.artic.edu/iiif/2/${imageId}/full/${size},/0/default.jpg`;
   };
 
-  const fetchRandomArtwork = async (
-    gender: string = ""
-  ): Promise<ArtworkData | null> => {
+  const fetchRandomArtwork = async (gender: string = ""): Promise<ArtworkData | null> => {
     try {
       // Get a random page to add variety
       const randomPage = Math.floor(Math.random() * 20) + 1;
@@ -85,9 +83,7 @@ export function usePortrait() {
       }
 
       // Filter for artworks that have images
-      const artworksWithImages = data.data.filter(
-        (artwork: any) => artwork.image_id
-      );
+      const artworksWithImages = data.data.filter((artwork: any) => artwork.image_id);
 
       if (artworksWithImages.length === 0) {
         // If no images on this page, try again with a different page
@@ -111,9 +107,7 @@ export function usePortrait() {
     }
   };
 
-  const loadRandomPortrait = async (
-    gender: string = ""
-  ): Promise<PortraitData | null> => {
+  const loadRandomPortrait = async (gender: string = ""): Promise<PortraitData | null> => {
     isLoading.value = true;
     error.value = null;
 

@@ -12,11 +12,7 @@
             }`
           : ""
       }}
-      <IconButton
-        v-if="characterStore.isEditMode"
-        icon="mdi:die-5"
-        @click="rollForAbilityPoints"
-      />
+      <IconButton v-if="characterStore.isEditMode" icon="mdi:die-5" @click="rollForAbilityPoints" />
     </h2>
     <div class="scores-grid">
       <ScoreBox

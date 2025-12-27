@@ -21,13 +21,7 @@ export const skills = {
   },
   accomplishment: {
     feminine: ["illustration", "needlework"],
-    masculine: [
-      "patronage",
-      "publishing",
-      "clericship",
-      "medicine",
-      "classical languages",
-    ],
+    masculine: ["patronage", "publishing", "clericship", "medicine", "classical languages"],
     mutuallyAcceptable: [
       "singing",
       "piano forte",
@@ -52,17 +46,11 @@ export interface SkillWithAbility {
 // Helper function to get all acceptable skills for a gender
 export function getAcceptableSkills(gender: Gender): SkillWithAbility[] {
   const result: SkillWithAbility[] = [];
-  const skillCategories: AbilityScore[] = [
-    "beauty",
-    "wit",
-    "constitution",
-    "accomplishment",
-  ];
+  const skillCategories: AbilityScore[] = ["beauty", "wit", "constitution", "accomplishment"];
 
   skillCategories.forEach((ability) => {
     const categorySkills = skills[ability];
-    const genderSkills =
-      gender === "female" ? categorySkills.feminine : categorySkills.masculine;
+    const genderSkills = gender === "female" ? categorySkills.feminine : categorySkills.masculine;
     const mutualSkills = categorySkills.mutuallyAcceptable;
 
     // Add gender-specific skills
@@ -86,12 +74,7 @@ export function getAcceptableSkills(gender: Gender): SkillWithAbility[] {
 // Helper function to get all forbidden skills for a gender
 export function getForbiddenSkills(gender: Gender): SkillWithAbility[] {
   const result: SkillWithAbility[] = [];
-  const skillCategories: AbilityScore[] = [
-    "beauty",
-    "wit",
-    "constitution",
-    "accomplishment",
-  ];
+  const skillCategories: AbilityScore[] = ["beauty", "wit", "constitution", "accomplishment"];
 
   skillCategories.forEach((ability) => {
     const categorySkills = skills[ability];
@@ -120,12 +103,7 @@ export function getForbiddenSkills(gender: Gender): SkillWithAbility[] {
 
 // Helper function to get the ability score for a specific skill
 export function getSkillAbility(skillName: string): AbilityScore | null {
-  const skillCategories: AbilityScore[] = [
-    "beauty",
-    "wit",
-    "constitution",
-    "accomplishment",
-  ];
+  const skillCategories: AbilityScore[] = ["beauty", "wit", "constitution", "accomplishment"];
   const normalizedSkillName = skillName.toLowerCase().trim();
 
   for (const ability of skillCategories) {
@@ -137,11 +115,7 @@ export function getSkillAbility(skillName: string): AbilityScore | null {
       ...categorySkills.mutuallyForbidden,
     ];
 
-    if (
-      allSkills.some(
-        (skill) => skill.toLowerCase().trim() === normalizedSkillName
-      )
-    ) {
+    if (allSkills.some((skill) => skill.toLowerCase().trim() === normalizedSkillName)) {
       return ability;
     }
   }
@@ -153,7 +127,5 @@ export function getSkillAbility(skillName: string): AbilityScore | null {
 export function isSkillForbidden(skillName: string, gender: Gender): boolean {
   const forbiddenSkills = getForbiddenSkills(gender);
   const normalizedSkillName = skillName.toLowerCase().trim();
-  return forbiddenSkills.some(
-    (skill) => skill.name.toLowerCase().trim() === normalizedSkillName
-  );
+  return forbiddenSkills.some((skill) => skill.name.toLowerCase().trim() === normalizedSkillName);
 }

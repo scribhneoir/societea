@@ -10,4 +10,3 @@ import CharacterSheet from './components/CharacterSheet.vue'
 /* Import global styles */
 @import './style.css';
 </style>
-

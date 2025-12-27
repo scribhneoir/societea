@@ -98,19 +98,14 @@ export const useCharacterStore = defineStore("character", () => {
       if (character.name) name.value = character.name;
       if (character.age) age.value = character.age;
       if (character.gender) gender.value = character.gender;
-      if (character.abillityPoints !== undefined)
-        abillityPoints.value = character.abillityPoints;
-      if (character.constitution !== undefined)
-        constitution.value = character.constitution;
+      if (character.abillityPoints !== undefined) abillityPoints.value = character.abillityPoints;
+      if (character.constitution !== undefined) constitution.value = character.constitution;
       if (character.wit !== undefined) wit.value = character.wit;
       if (character.genderSpecificScore !== undefined)
         genderSpecificScore.value = character.genderSpecificScore;
-      if (character.accomplishment !== undefined)
-        accomplishment.value = character.accomplishment;
-      if (character.socialStanding !== undefined)
-        socialStanding.value = character.socialStanding;
-      if (character.inventory !== undefined)
-        inventory.value = character.inventory;
+      if (character.accomplishment !== undefined) accomplishment.value = character.accomplishment;
+      if (character.socialStanding !== undefined) socialStanding.value = character.socialStanding;
+      if (character.inventory !== undefined) inventory.value = character.inventory;
 
       if (character.skills && Array.isArray(character.skills)) {
         skills.value = new Set(character.skills);
@@ -147,11 +142,7 @@ export const useCharacterStore = defineStore("character", () => {
   }
 
   function deleteCharacter() {
-    if (
-      confirm(
-        "Are you sure you want to delete this character? This action cannot be undone."
-      )
-    ) {
+    if (confirm("Are you sure you want to delete this character? This action cannot be undone.")) {
       // Clear all character data
       name.value = "";
       age.value = 0;
@@ -188,7 +179,7 @@ export const useCharacterStore = defineStore("character", () => {
     () => {
       saveCharacter();
     },
-    { deep: true }
+    { deep: true },
   );
 
   // Initialize

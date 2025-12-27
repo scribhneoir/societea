@@ -7,11 +7,7 @@
         }`"
         @click="characterStore.isEditMode ? refreshPortrait() : null"
       >
-        <div
-          v-if="isLoading"
-          class="portrait-placeholder"
-          id="portrait-placeholder"
-        >
+        <div v-if="isLoading" class="portrait-placeholder" id="portrait-placeholder">
           <span>Loading portrait...</span>
         </div>
         <img
@@ -28,16 +24,9 @@
 
         <!-- Social Standing Badge -->
         <div class="social-standing-badge">
-          <svg
-            class="curved-text"
-            viewBox="0 0 100 100"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+          <svg class="curved-text" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
             <defs>
-              <path
-                id="circlePath"
-                d="M 50,50 m -38,0 a 38,38 0 1,1 76,0 a 38,38 0 1,1 -76,0"
-              />
+              <path id="circlePath" d="M 50,50 m -38,0 a 38,38 0 1,1 76,0 a 38,38 0 1,1 -76,0" />
             </defs>
             <text class="curved-label">
               <textPath href="#circlePath">Social Standing</textPath>

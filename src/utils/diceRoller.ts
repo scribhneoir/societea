@@ -29,7 +29,7 @@ export async function roll2d6(
   label: string,
   target: number,
   _reroll = false,
-  under = true
+  under = true,
 ): Promise<void> {
   currentRollLabel = label;
   currentTarget = target;
@@ -51,9 +51,7 @@ export async function roll2d6(
 
   if (!diceBox) return;
 
-  const canvas = document.querySelector(
-    "#dice-box-container canvas"
-  ) as HTMLElement;
+  const canvas = document.querySelector("#dice-box-container canvas") as HTMLElement;
   if (canvas) {
     canvas.style.opacity = "1";
     canvas.style.transition = `opacity ${FADE_DURATION}ms ease-in-out`;
@@ -70,23 +68,16 @@ function displayRollResults(results: any): void {
       return value === 6 ? 0 : value;
     }) || [];
 
-  const total = adjustedValues.reduce(
-    (sum: number, val: number) => sum + val,
-    0
-  );
+  const total = adjustedValues.reduce((sum: number, val: number) => sum + val, 0);
   // const values = adjustedValues.join(", ");
 
-  const success = currentUnder
-    ? total <= currentTarget
-    : total >= currentTarget;
+  const success = currentUnder ? total <= currentTarget : total >= currentTarget;
   // const reroll = currentReroll && !success;
 
   const notification = document.createElement("div");
   notification.className = "dice-result-notification";
   notification.innerHTML = `
-    <div class="dice-result-content ${
-      success ? "dice-result-success" : "dice-result-failure"
-    }">
+    <div class="dice-result-content ${success ? "dice-result-success" : "dice-result-failure"}">
       <strong>${currentRollLabel || "Roll"}</strong>
       <strong>${success ? "Success" : "Failure"}</strong>
       <div class="dice-result-total">Total: ${total}</div>
@@ -111,9 +102,7 @@ async function cleanupDiceBox(): Promise<void> {
     cleanupTimer = null;
   }
 
-  const canvas = document.querySelector(
-    "#dice-box-container canvas"
-  ) as HTMLElement;
+  const canvas = document.querySelector("#dice-box-container canvas") as HTMLElement;
   if (canvas) {
     canvas.style.opacity = "0";
     canvas.style.transition = `opacity ${FADE_DURATION}ms ease-in-out`;
@@ -134,9 +123,7 @@ export async function clearDice(): Promise<void> {
   await cleanupDiceBox();
 }
 
-export async function roll3d6ForAbilityPoints(
-  onResult: (total: number) => void
-): Promise<void> {
+export async function roll3d6ForAbilityPoints(onResult: (total: number) => void): Promise<void> {
   // Cancel any pending cleanup
   if (cleanupTimer) {
     clearTimeout(cleanupTimer);
@@ -153,9 +140,7 @@ export async function roll3d6ForAbilityPoints(
 
   if (!diceBox) return;
 
-  const canvas = document.querySelector(
-    "#dice-box-container canvas"
-  ) as HTMLElement;
+  const canvas = document.querySelector("#dice-box-container canvas") as HTMLElement;
   if (canvas) {
     canvas.style.opacity = "1";
     canvas.style.transition = `opacity ${FADE_DURATION}ms ease-in-out`;
@@ -185,9 +170,7 @@ export async function roll3d6ForAbilityPoints(
         <strong>Ability Points Roll</strong>
         <div class="dice-result-total">Rolled: ${values.join(", ")}</div>
         <div class="dice-result-total">Discarded highest: ${discardedValue}</div>
-        <div class="dice-result-total">Kept: ${keptValues.join(
-          ", "
-        )} = ${total}</div>
+        <div class="dice-result-total">Kept: ${keptValues.join(", ")} = ${total}</div>
         <div class="dice-result-total"><strong>Total Points: 16 + ${total} = ${finalPoints}</strong></div>
       </div>
     `;
@@ -213,7 +196,7 @@ export async function roll3d6ForAbilityPoints(
 export async function roll3d6WithAdvantage(
   label: string,
   target: number,
-  under = true
+  under = true,
 ): Promise<void> {
   currentRollLabel = label;
   currentTarget = target;
@@ -235,9 +218,7 @@ export async function roll3d6WithAdvantage(
 
   if (!diceBox) return;
 
-  const canvas = document.querySelector(
-    "#dice-box-container canvas"
-  ) as HTMLElement;
+  const canvas = document.querySelector("#dice-box-container canvas") as HTMLElement;
   if (canvas) {
     canvas.style.opacity = "1";
     canvas.style.transition = `opacity ${FADE_DURATION}ms ease-in-out`;
@@ -258,25 +239,19 @@ export async function roll3d6WithAdvantage(
     const keptValues = sortedValues.slice(0, 2); // keep the two lowest
     const total = keptValues.reduce((sum: number, val: number) => sum + val, 0);
 
-    const success = currentUnder
-      ? total <= currentTarget
-      : total >= currentTarget;
+    const success = currentUnder ? total <= currentTarget : total >= currentTarget;
 
     const notification = document.createElement("div");
     notification.className = "dice-result-notification";
     notification.innerHTML = `
-      <div class="dice-result-content ${
-        success ? "dice-result-success" : "dice-result-failure"
-      }">
+      <div class="dice-result-content ${success ? "dice-result-success" : "dice-result-failure"}">
         <strong>${currentRollLabel || "Roll"}</strong>
         <strong>${success ? "Success" : "Failure"}</strong>
-        <div class="dice-result-total">Rolled: ${adjustedValues.join(
-          ", "
-        )}</div>
+        <div class="dice-result-total">Rolled: ${adjustedValues.join(", ")}</div>
         <div class="dice-result-total">Dropped highest: ${droppedValue}</div>
         <div class="dice-result-total">Total: ${total} ${
-      currentUnder ? "≤" : "≥"
-    } ${currentTarget}</div>
+          currentUnder ? "≤" : "≥"
+        } ${currentTarget}</div>
       </div>
     `;
 

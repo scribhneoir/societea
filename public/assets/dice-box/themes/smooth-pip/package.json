@@ -1,31 +1,31 @@
 {
   "name": "@3d-dice/theme-smooth-pip",
+  "version": "0.2.1",
   "private": false,
+  "description": "Six sided die with pips and rounded edges for the Smooth theme",
+  "keywords": [
+    "3D",
+    "d&d",
+    "dice",
+    "dnd",
+    "javascript",
+    "rpg",
+    "skins",
+    "tabletop",
+    "theme"
+  ],
+  "homepage": "https://fantasticdice.games",
+  "bugs": {
+    "url": "https://github.com/3d-dice/dice-themes/issues"
+  },
+  "license": "MIT",
   "author": {
     "name": "Frank Ali"
   },
-  "description": "Six sided die with pips and rounded edges for the Smooth theme",
-  "version": "0.2.1",
-  "keywords": [
-    "3D",
-    "dice",
-    "skins",
-    "theme",
-    "javascript",
-    "rpg",
-    "dnd",
-    "d&d",
-    "tabletop"
-  ],
-  "license": "MIT",
-  "homepage": "https://fantasticdice.games",
   "repository": {
     "type": "git",
     "url": "https://github.com/3d-dice/dice-themes",
     "directory": "themes/smooth-pip"
-  },
-  "bugs": {
-    "url": "https://github.com/3d-dice/dice-themes/issues"
   },
   "files": [
     "*"
